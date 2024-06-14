@@ -1,13 +1,18 @@
-import {cart, addToCart} from '../data/cart.js';
-import {products} from '../data/products.js';
+import { cart, addToCart } from '../data/cart.js';
+import { products } from '../data/products.js';
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+
+const today = dayjs();
+const deliveryDate = today.add(7, 'days');
+console.log(deliveryDate.format('dddd, MMMM D'));
+
 let productsHTML = '';
 
 products.forEach((product) => {
     productsHTML += `
         <div class="product-container">
           <div class="product-image-container">
-            <img class="product-image"
-              src="${product.image}">
+            <img class="product-image" src="${product.image}">
           </div>
 
           <div class="product-name limit-text-to-2-lines">
@@ -15,15 +20,14 @@ products.forEach((product) => {
           </div>
 
           <div class="product-rating-container">
-            <img class="product-rating-stars"
-              src="images/ratings/rating-${product.rating.stars*10}.png">
+            <img class="product-rating-stars" src="images/ratings/rating-${product.rating.stars * 10}.png">
             <div class="product-rating-count link-primary">
               ${product.rating.count}
             </div>
           </div>
 
           <div class="product-price">
-            $${(product.priceCents/100).toFixed(2)}
+            $${(product.priceCents / 100).toFixed(2)}
           </div>
 
           <div class="product-quantity-container">
@@ -53,24 +57,28 @@ products.forEach((product) => {
             Add to Cart
           </button>
         </div>
-    `
-})
+    `;
+});
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
-function updateCartQuantity(){
+function updateCartQuantity() {
   let cartQuantity = 0;
   cart.forEach(cartItem => {
       cartQuantity += cartItem.quantity;
-  })
+  });
   document.querySelector(".js-cart-quantity").innerText = cartQuantity;
-
 }
 
+
+// Attach event listeners to the Add to Cart buttons
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     button.addEventListener('click', () => {
         const productId = button.dataset.productId;
         addToCart(productId);
         updateCartQuantity();
-      }
-    )})
+    });
+});
+
+// Initial cart quantity update on page load
+updateCartQuantity();

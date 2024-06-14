@@ -3,11 +3,18 @@ import { products } from '../data/products.js';
 
 let cartSummaryHTML = '';
 
-cart.forEach(cartItem =>{
+cart.forEach(cartItem => {
     const productId = cartItem.productId;
-
+    console.log(productId);
     let matchingProduct = products.find(product => product.id === productId);
-
+    
+    if (!matchingProduct) {
+        console.error(`Product with ID ${productId} not found in products list.`);
+        return; // Skip this cart item if the product is not found
+    }
+    
+    console.log(matchingProduct);
+    
     cartSummaryHTML += `
     <div class="cart-item-container js-cart-item-container-${productId}">
         <div class="delivery-date">
@@ -23,7 +30,7 @@ cart.forEach(cartItem =>{
                 ${matchingProduct.name}
             </div>
             <div class="product-price">
-                $${(matchingProduct.priceCents /100).toFixed(2)}
+                $${(matchingProduct.priceCents / 100).toFixed(2)}
             </div>
             <div class="product-quantity">
                 <span>
@@ -84,18 +91,19 @@ cart.forEach(cartItem =>{
             </div>
         </div>
     </div>
-    `
+    `;
 });
-
 
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 
-document.querySelectorAll('.js-delete-link').forEach((link)=> {
+document.querySelectorAll('.js-delete-link').forEach((link) => {
     link.addEventListener('click', () => {
-        const productId = link.dataset.productId; 
+        const productId = link.dataset.productId;
         deleteProduct(productId);
-        
+
         const container = document.querySelector(`.js-cart-item-container-${productId}`);
-        container.remove();
-    })
-})
+        if (container) {
+            container.remove();
+        }
+    });
+});
