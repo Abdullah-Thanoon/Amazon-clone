@@ -1,8 +1,5 @@
-Here's a comprehensive `README.md` file for your Amazon clone repository:
-
----
-
 # Amazon Clone
+![image](https://github.com/Abdullah-Thanoon/Amazon-clone/assets/83435812/4db19038-7381-4297-8901-01d848bf7d3c)
 
 This repository contains an Amazon website clone developed using HTML, CSS, and JavaScript. The project aims to mimic the basic functionalities and layout of the Amazon website.
 
